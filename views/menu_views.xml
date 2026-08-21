@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_zoo_root"
+              name="CHANGAN Zoo"
+              sequence="10"/>
+
+    <menuitem id="menu_zoo_management"
+              name="Management"
+              parent="menu_zoo_root"
+              sequence="10"/>
+</odoo>

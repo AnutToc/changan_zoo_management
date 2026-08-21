@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Zookeepers -->
+        <record id="demo_zookeeper_1" model="zoo.zookeeper">
+            <field name="name">John Doe</field>
+            <field name="position">Senior Zookeeper</field>
+            <field name="age">35</field>
+            <field name="monthly_salary">45000.0</field>
+        </record>
+
+        <record id="demo_zookeeper_2" model="zoo.zookeeper">
+            <field name="name">Jane Smith</field>
+            <field name="position">Junior Zookeeper</field>
+            <field name="age">28</field>
+            <field name="monthly_salary">30000.0</field>
+        </record>
+
+        <!-- Living Zones -->
+        <record id="demo_zone_savanna" model="zoo.living.zone">
+            <field name="name">African Savanna</field>
+            <field name="zookeeper_id" ref="demo_zookeeper_1"/>
+        </record>
+
+        <record id="demo_zone_reptile" model="zoo.living.zone">
+            <field name="name">Reptile House</field>
+            <field name="zookeeper_id" ref="demo_zookeeper_2"/>
+        </record>
+
+        <!-- Animals -->
+        <record id="demo_animal_lion" model="zoo.animal">
+            <field name="name">Simba</field>
+            <field name="species">Lion</field>
+            <field name="age">5</field>
+            <field name="zone_id" ref="demo_zone_savanna"/>
+        </record>
+
+        <record id="demo_animal_giraffe" model="zoo.animal">
+            <field name="name">Melman</field>
+            <field name="species">Giraffe</field>
+            <field name="age">8</field>
+            <field name="zone_id" ref="demo_zone_savanna"/>
+        </record>
+
+        <record id="demo_animal_snake" model="zoo.animal">
+            <field name="name">Kaa</field>
+            <field name="species">Python</field>
+            <field name="age">3</field>
+            <field name="zone_id" ref="demo_zone_reptile"/>
+        </record>
+    </data>
+</odoo>

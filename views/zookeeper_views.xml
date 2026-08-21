@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Search View -->
+    <record id="view_zoo_zookeeper_search" model="ir.ui.view">
+        <field name="name">zoo.zookeeper.search</field>
+        <field name="model">zoo.zookeeper</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="position"/>
+                <filter string="Senior Zookeepers" name="senior" domain="[('position', 'ilike', 'Senior')]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Position" name="group_by_position" context="{'group_by':'position'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Kanban View -->
+    <record id="view_zoo_zookeeper_kanban" model="ir.ui.view">
+        <field name="name">zoo.zookeeper.kanban</field>
+        <field name="model">zoo.zookeeper</field>
+        <field name="arch" type="xml">
+            <kanban>
+                <field name="id"/>
+                <field name="name"/>
+                <field name="position"/>
+                <field name="picture"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click o_kanban_record_has_image_fill">
+                            <div class="o_kanban_image" t-if="record.picture.raw_value">
+                                <img t-att-src="kanban_image('zoo.zookeeper', 'picture', record.id.raw_value)" alt="Zookeeper"/>
+                            </div>
+                            <div class="o_kanban_image" t-else="">
+                                <img t-att-src="_s + '/base/static/img/avatar.png'" alt="Zookeeper"/>
+                            </div>
+                            <div class="oe_kanban_details">
+                                <strong class="o_kanban_record_title"><field name="name"/></strong>
+                                <ul>
+                                    <li>Position: <field name="position"/></li>
+                                    <li>Age: <field name="age"/></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="view_zoo_zookeeper_tree" model="ir.ui.view">
+        <field name="name">zoo.zookeeper.tree</field>
+        <field name="model">zoo.zookeeper</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="position"/>
+                <field name="age"/>
+                <field name="monthly_salary" groups="changan_zoo.group_zoo_manager"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_zoo_zookeeper_form" model="ir.ui.view">
+        <field name="name">zoo.zookeeper.form</field>
+        <field name="model">zoo.zookeeper</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_zones" type="object" class="oe_stat_button" icon="fa-map-marker">
+                            <field name="zone_count" widget="statinfo" string="Zones"/>
+                        </button>
+                    </div>
+                    <field name="picture" widget="image" class="oe_avatar"/>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Zookeeper Name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="position"/>
+                            <field name="age"/>
+                        </group>
+                        <group>
+                            <field name="monthly_salary" groups="changan_zoo.group_zoo_manager"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Managed Zones" name="managed_zones">
+                            <field name="zone_ids">
+                                <tree>
+                                    <field name="name"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <!-- Chatter -->
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_zoo_zookeeper" model="ir.actions.act_window">
+        <field name="name">Zookeepers</field>
+        <field name="res_model">zoo.zookeeper</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="search_view_id" ref="view_zoo_zookeeper_search"/>
+    </record>
+
+    <menuitem id="menu_zoo_zookeeper"
+              name="Zookeepers"
+              parent="menu_zoo_management"
+              action="action_zoo_zookeeper"
+              sequence="30"/>
+</odoo>
