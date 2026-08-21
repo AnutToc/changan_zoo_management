@@ -14,6 +14,7 @@
         'security/security.xml',
         'security/ir.model.access.csv',
         'views/menu_views.xml',
+        'views/animal_group_views.xml',
         'views/zookeeper_views.xml',
         'views/living_zone_views.xml',
         'views/animal_views.xml',

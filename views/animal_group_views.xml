@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_zoo_animal_group_tree" model="ir.ui.view">
+        <field name="name">zoo.animal.group.tree</field>
+        <field name="model">zoo.animal.group</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="description"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_zoo_animal_group_form" model="ir.ui.view">
+        <field name="name">zoo.animal.group.form</field>
+        <field name="model">zoo.animal.group</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="e.g. Mammal, Reptile, Bird"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <field name="description"/>
+                    </group>
+                    <notebook>
+                        <page string="Animals" name="animals">
+                            <field name="animal_ids">
+                                <tree>
+                                    <field name="name"/>
+                                    <field name="age"/>
+                                    <field name="zone_id"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_zoo_animal_group" model="ir.actions.act_window">
+        <field name="name">Animal Groups</field>
+        <field name="res_model">zoo.animal.group</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_zoo_animal_group"
+              name="Animal Groups"
+              parent="menu_zoo_configuration"
+              action="action_zoo_animal_group"
+              sequence="10"/>
+</odoo>

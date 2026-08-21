@@ -26,10 +26,14 @@
                     <t t-name="kanban-box">
                         <div class="oe_kanban_global_click">
                             <div class="oe_kanban_details">
-                                <strong class="o_kanban_record_title"><field name="name"/></strong>
+                                <strong class="o_kanban_record_title">
+                                    <field name="name"/>
+                                </strong>
                                 <ul>
-                                    <li>Keeper: <field name="zookeeper_id"/></li>
-                                    <li>Animals: <field name="animal_count"/></li>
+                                    <li>Keeper: <field name="zookeeper_id"/>
+                                    </li>
+                                    <li>Animals: <field name="animal_count"/>
+                                    </li>
                                 </ul>
                             </div>
                         </div>
@@ -100,9 +104,5 @@
         <field name="search_view_id" ref="view_zoo_living_zone_search"/>
     </record>
 
-    <menuitem id="menu_zoo_living_zone"
-              name="Living Zones"
-              parent="menu_zoo_management"
-              action="action_zoo_living_zone"
-              sequence="20"/>
+    <menuitem id="menu_zoo_living_zone" name="Living Zones" parent="menu_zoo_management" action="action_zoo_living_zone" sequence="20"/>
 </odoo>

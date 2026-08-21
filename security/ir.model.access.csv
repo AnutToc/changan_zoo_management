@@ -2,7 +2,9 @@ id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_zoo_zookeeper_keeper,zoo.zookeeper.keeper,model_zoo_zookeeper,changan_zoo.group_zoo_keeper,1,0,0,0
 access_zoo_living_zone_keeper,zoo.living.zone.keeper,model_zoo_living_zone,changan_zoo.group_zoo_keeper,1,1,0,0
 access_zoo_animal_keeper,zoo.animal.keeper,model_zoo_animal,changan_zoo.group_zoo_keeper,1,1,1,0
+access_zoo_animal_group_keeper,zoo.animal.group.keeper,model_zoo_animal_group,changan_zoo.group_zoo_keeper,1,0,0,0
 
 access_zoo_zookeeper_manager,zoo.zookeeper.manager,model_zoo_zookeeper,changan_zoo.group_zoo_manager,1,1,1,1
 access_zoo_living_zone_manager,zoo.living.zone.manager,model_zoo_living_zone,changan_zoo.group_zoo_manager,1,1,1,1
 access_zoo_animal_manager,zoo.animal.manager,model_zoo_animal,changan_zoo.group_zoo_manager,1,1,1,1
+access_zoo_animal_group_manager,zoo.animal.group.manager,model_zoo_animal_group,changan_zoo.group_zoo_manager,1,1,1,1

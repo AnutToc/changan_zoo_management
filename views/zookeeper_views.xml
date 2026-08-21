@@ -36,10 +36,14 @@
                                 <img t-att-src="_s + '/base/static/img/avatar.png'" alt="Zookeeper"/>
                             </div>
                             <div class="oe_kanban_details">
-                                <strong class="o_kanban_record_title"><field name="name"/></strong>
+                                <strong class="o_kanban_record_title">
+                                    <field name="name"/>
+                                </strong>
                                 <ul>
-                                    <li>Position: <field name="position"/></li>
-                                    <li>Age: <field name="age"/></li>
+                                    <li>Position: <field name="position"/>
+                                    </li>
+                                    <li>Age: <field name="age"/>
+                                    </li>
                                 </ul>
                             </div>
                         </div>
@@ -116,9 +120,5 @@
         <field name="search_view_id" ref="view_zoo_zookeeper_search"/>
     </record>
 
-    <menuitem id="menu_zoo_zookeeper"
-              name="Zookeepers"
-              parent="menu_zoo_management"
-              action="action_zoo_zookeeper"
-              sequence="30"/>
+    <menuitem id="menu_zoo_zookeeper" name="Zookeepers" parent="menu_zoo_management" action="action_zoo_zookeeper" sequence="30"/>
 </odoo>

@@ -1,19 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data noupdate="1">
+        <!-- Animal Groups -->
+        <record id="demo_group_mammal" model="zoo.animal.group">
+            <field name="name">Mammal</field>
+            <field name="description">Warm-blooded vertebrates, typically have hair or fur.</field>
+        </record>
+        <record id="demo_group_reptile" model="zoo.animal.group">
+            <field name="name">Reptile</field>
+            <field name="description">Cold-blooded vertebrates covered in special skin made up of scales, bony plates, or a combination of both.</field>
+        </record>
+        <record id="demo_group_bird" model="zoo.animal.group">
+            <field name="name">Bird</field>
+            <field name="description">Warm-blooded vertebrates characterized by feathers, toothless beaked jaws, and the laying of hard-shelled eggs.</field>
+        </record>
+
         <!-- Zookeepers -->
         <record id="demo_zookeeper_1" model="zoo.zookeeper">
             <field name="name">John Doe</field>
+            <field name="gender">male</field>
             <field name="position">Senior Zookeeper</field>
             <field name="age">35</field>
             <field name="monthly_salary">45000.0</field>
+            <field name="picture" type="base64" file="changan_zoo/static/src/img/john.jpg"/>
         </record>
-
         <record id="demo_zookeeper_2" model="zoo.zookeeper">
             <field name="name">Jane Smith</field>
+            <field name="gender">female</field>
             <field name="position">Junior Zookeeper</field>
             <field name="age">28</field>
             <field name="monthly_salary">30000.0</field>
+            <field name="picture" type="base64" file="changan_zoo/static/src/img/jane.jpg"/>
+        </record>
+        <record id="demo_zookeeper_3" model="zoo.zookeeper">
+            <field name="name">Bob Miller</field>
+            <field name="gender">other</field>
+            <field name="position">Avian Specialist</field>
+            <field name="age">42</field>
+            <field name="monthly_salary">55000.0</field>
+            <field name="picture" type="base64" file="changan_zoo/static/src/img/bob.jpg"/>
         </record>
 
         <!-- Living Zones -->
@@ -21,32 +46,118 @@
             <field name="name">African Savanna</field>
             <field name="zookeeper_id" ref="demo_zookeeper_1"/>
         </record>
-
         <record id="demo_zone_reptile" model="zoo.living.zone">
             <field name="name">Reptile House</field>
             <field name="zookeeper_id" ref="demo_zookeeper_2"/>
         </record>
+        <record id="demo_zone_aviary" model="zoo.living.zone">
+            <field name="name">Grand Aviary</field>
+            <field name="zookeeper_id" ref="demo_zookeeper_3"/>
+        </record>
 
         <!-- Animals -->
-        <record id="demo_animal_lion" model="zoo.animal">
+        <!-- 1. Alive, Male, Health OK -->
+        <record id="demo_animal_simba" model="zoo.animal">
             <field name="name">Simba</field>
             <field name="species">Lion</field>
-            <field name="age">5</field>
+            <field name="gender">male</field>
+            <field name="group_id" ref="demo_group_mammal"/>
+            <field name="birth_date">2021-05-01</field>
+            <field name="state">alive</field>
+            <field name="next_health_check" eval="(datetime.now() + relativedelta(days=30)).strftime('%Y-%m-%d')"/>
             <field name="zone_id" ref="demo_zone_savanna"/>
+            <field name="picture" type="base64" file="changan_zoo/static/src/img/simba.jpg"/>
         </record>
 
-        <record id="demo_animal_giraffe" model="zoo.animal">
-            <field name="name">Melman</field>
-            <field name="species">Giraffe</field>
-            <field name="age">8</field>
-            <field name="zone_id" ref="demo_zone_savanna"/>
-        </record>
-
-        <record id="demo_animal_snake" model="zoo.animal">
+        <!-- 2. Sick, Female, Health Overdue -->
+        <record id="demo_animal_kaa" model="zoo.animal">
             <field name="name">Kaa</field>
             <field name="species">Python</field>
-            <field name="age">3</field>
+            <field name="gender">female</field>
+            <field name="group_id" ref="demo_group_reptile"/>
+            <field name="birth_date">2023-11-20</field>
+            <field name="state">sick</field>
+            <field name="next_health_check" eval="(datetime.now() - relativedelta(days=5)).strftime('%Y-%m-%d')"/>
             <field name="zone_id" ref="demo_zone_reptile"/>
+            <field name="picture" type="base64" file="changan_zoo/static/src/img/kaa.jpg"/>
+        </record>
+
+        <!-- 3. Alive, Male, Health Upcoming (Warning) -->
+        <record id="demo_animal_melman" model="zoo.animal">
+            <field name="name">Melman</field>
+            <field name="species">Giraffe</field>
+            <field name="gender">male</field>
+            <field name="group_id" ref="demo_group_mammal"/>
+            <field name="birth_date">2018-03-15</field>
+            <field name="state">alive</field>
+            <field name="next_health_check" eval="(datetime.now() + relativedelta(days=3)).strftime('%Y-%m-%d')"/>
+            <field name="zone_id" ref="demo_zone_savanna"/>
+            <field name="picture" type="base64" file="changan_zoo/static/src/img/melman.jpg"/>
+        </record>
+
+        <!-- 4. Deceased, Male, Has Death Date and Reason -->
+        <record id="demo_animal_mufasa" model="zoo.animal">
+            <field name="name">Mufasa</field>
+            <field name="species">Lion</field>
+            <field name="gender">male</field>
+            <field name="group_id" ref="demo_group_mammal"/>
+            <field name="birth_date">2010-08-01</field>
+            <field name="state">deceased</field>
+            <field name="death_date" eval="(datetime.now() - relativedelta(months=6)).strftime('%Y-%m-%d')"/>
+            <field name="death_reason">Old age and natural causes.</field>
+            <field name="zone_id" ref="demo_zone_savanna"/>
+            <field name="picture" type="base64" file="changan_zoo/static/src/img/mufasa.jpg"/>
+        </record>
+
+        <!-- 5. Transferred, Unknown Gender -->
+        <record id="demo_animal_tweety" model="zoo.animal">
+            <field name="name">Tweety</field>
+            <field name="species">Canary</field>
+            <field name="gender">unknown</field>
+            <field name="group_id" ref="demo_group_bird"/>
+            <field name="birth_date">2025-01-10</field>
+            <field name="state">transferred</field>
+            <field name="zone_id" ref="demo_zone_aviary"/>
+            <field name="picture" type="base64" file="changan_zoo/static/src/img/tweety.jpg"/>
+        </record>
+
+        <!-- 6. Alive, Male, Health OK -->
+        <record id="demo_animal_moodeng" model="zoo.animal">
+            <field name="name">Moodeng</field>
+            <field name="species">Hippopotamus</field>
+            <field name="gender">male</field>
+            <field name="group_id" ref="demo_group_mammal"/>
+            <field name="birth_date">2019-07-22</field>
+            <field name="state">alive</field>
+            <field name="next_health_check" eval="(datetime.now() + relativedelta(days=60)).strftime('%Y-%m-%d')"/>
+            <field name="zone_id" ref="demo_zone_savanna"/>
+            <field name="picture" type="base64" file="changan_zoo/static/src/img/moodeng.jpg"/>
+        </record>
+
+        <!-- 7. Alive, Male, Health OK -->
+        <record id="demo_animal_rex" model="zoo.animal">
+            <field name="name">Rex</field>
+            <field name="species">Crocodile</field>
+            <field name="gender">male</field>
+            <field name="group_id" ref="demo_group_reptile"/>
+            <field name="birth_date">2005-04-12</field>
+            <field name="state">alive</field>
+            <field name="next_health_check" eval="(datetime.now() + relativedelta(days=15)).strftime('%Y-%m-%d')"/>
+            <field name="zone_id" ref="demo_zone_reptile"/>
+            <field name="picture" type="base64" file="changan_zoo/static/src/img/rex.jpg"/>
+        </record>
+
+        <!-- 8. Sick, Male, Health Upcoming -->
+        <record id="demo_animal_blu" model="zoo.animal">
+            <field name="name">Blu</field>
+            <field name="species">Macaw</field>
+            <field name="gender">male</field>
+            <field name="group_id" ref="demo_group_bird"/>
+            <field name="birth_date">2020-02-14</field>
+            <field name="state">sick</field>
+            <field name="next_health_check" eval="(datetime.now() + relativedelta(days=1)).strftime('%Y-%m-%d')"/>
+            <field name="zone_id" ref="demo_zone_aviary"/>
+            <field name="picture" type="base64" file="changan_zoo/static/src/img/blu.jpg"/>
         </record>
     </data>
 </odoo>

@@ -7,6 +7,11 @@ class ZooZookeeper(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
     name = fields.Char(string='Name', required=True, tracking=True)
+    gender = fields.Selection(
+        [('male', 'Male'), ('female', 'Female'), ('other', 'Other')],
+        string='Gender',
+        required=True
+    )
     position = fields.Char(string='Position', tracking=True)
     age = fields.Integer(string='Age', tracking=True)
     picture = fields.Image(string='Picture')

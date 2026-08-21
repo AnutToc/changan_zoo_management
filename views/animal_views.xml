@@ -7,10 +7,18 @@
             <search>
                 <field name="name"/>
                 <field name="species"/>
+                <field name="gender"/>
+                <field name="group_id"/>
                 <field name="zone_id"/>
+                <filter string="Alive Animals" name="alive" domain="[('state', 'in', ['alive', 'sick'])]"/>
                 <filter string="Adults (Age > 2)" name="adult" domain="[('age', '&gt;', 2)]"/>
+                <separator/>
+                <filter string="Deceased" name="deceased" domain="[('state', '=', 'deceased')]"/>
                 <group expand="0" string="Group By">
+                    <filter string="Status" name="group_by_state" context="{'group_by':'state'}"/>
                     <filter string="Species" name="group_by_species" context="{'group_by':'species'}"/>
+                    <filter string="Gender" name="group_by_gender" context="{'group_by':'gender'}"/>
+                    <filter string="Animal Group" name="group_by_group" context="{'group_by':'group_id'}"/>
                     <filter string="Zone" name="group_by_zone" context="{'group_by':'zone_id'}"/>
                 </group>
             </search>
@@ -21,10 +29,11 @@
         <field name="name">zoo.animal.kanban</field>
         <field name="model">zoo.animal</field>
         <field name="arch" type="xml">
-            <kanban default_group_by="zone_id">
+            <kanban default_group_by="group_id">
                 <field name="id"/>
                 <field name="name"/>
                 <field name="species"/>
+                <field name="group_id"/>
                 <field name="picture"/>
                 <field name="zone_id"/>
                 <templates>
@@ -37,9 +46,10 @@
                                 <img t-att-src="_s + '/base/static/img/avatar.png'" alt="Animal"/>
                             </div>
                             <div class="oe_kanban_details">
-                                <strong class="o_kanban_record_title"><field name="name"/></strong>
+                                <strong class="o_kanban_record_title"><field name="name"/> (<field name="species"/>)</strong>
                                 <ul>
-                                    <li>Species: <field name="species"/></li>
+                                    <li>Group: <field name="group_id"/></li>
+                                    <li>Gender: <field name="gender"/></li>
                                     <li>Age: <field name="age"/></li>
                                 </ul>
                             </div>
@@ -57,6 +67,8 @@
             <tree>
                 <field name="name"/>
                 <field name="species"/>
+                <field name="gender"/>
+                <field name="group_id"/>
                 <field name="zone_id"/>
                 <field name="age"/>
             </tree>
@@ -68,7 +80,11 @@
         <field name="model">zoo.animal</field>
         <field name="arch" type="xml">
             <form>
+                <header>
+                    <field name="state" widget="statusbar" options="{'clickable': '1'}"/>
+                </header>
                 <sheet>
+                    <widget name="web_ribbon" title="Deceased" bg_color="text-bg-danger" invisible="state != 'deceased'"/>
                     <field name="picture" widget="image" class="oe_avatar"/>
                     <div class="oe_title">
                         <h1>
@@ -78,11 +94,23 @@
                     <group>
                         <group>
                             <field name="species"/>
+                            <field name="gender"/>
+                            <field name="group_id"/>
+                            <field name="birth_date"/>
                             <field name="age"/>
                         </group>
                         <group>
                             <field name="zone_id"/>
+                            <field name="next_health_check"/>
+                            <field name="health_check_status" invisible="not next_health_check" widget="badge" 
+                                   decoration-danger="health_check_status == 'overdue'" 
+                                   decoration-warning="health_check_status == 'upcoming'" 
+                                   decoration-success="health_check_status == 'ok'"/>
                         </group>
+                    </group>
+                    <group invisible="state != 'deceased'">
+                        <field name="death_date" required="state == 'deceased'"/>
+                        <field name="death_reason"/>
                     </group>
                 </sheet>
                 <div class="oe_chatter">
@@ -100,6 +128,42 @@
         <field name="view_mode">kanban,tree,form</field>
         <field name="search_view_id" ref="view_zoo_animal_search"/>
     </record>
+
+    <!-- Health Check Specific Tree View -->
+    <record id="view_zoo_health_check_tree" model="ir.ui.view">
+        <field name="name">zoo.health.check.tree</field>
+        <field name="model">zoo.animal</field>
+        <field name="arch" type="xml">
+            <tree decoration-danger="health_check_status == 'overdue'" 
+                  decoration-warning="health_check_status == 'upcoming'" 
+                  decoration-success="health_check_status == 'ok'"
+                  default_order="next_health_check asc"
+                  create="0">
+                <field name="name"/>
+                <field name="species"/>
+                <field name="zone_id"/>
+                <field name="next_health_check"/>
+                <field name="health_check_status" widget="badge" 
+                       decoration-danger="health_check_status == 'overdue'" 
+                       decoration-warning="health_check_status == 'upcoming'" 
+                       decoration-success="health_check_status == 'ok'"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_zoo_health_check" model="ir.actions.act_window">
+        <field name="name">Health Check Schedule</field>
+        <field name="res_model">zoo.animal</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_zoo_health_check_tree"/>
+        <field name="domain">[('state', 'in', ['alive', 'sick']), ('next_health_check', '!=', False)]</field>
+    </record>
+
+    <menuitem id="menu_zoo_health_check"
+              name="Health Checks"
+              parent="menu_zoo_management"
+              action="action_zoo_health_check"
+              sequence="15"/>
 
     <menuitem id="menu_zoo_animal"
               name="Animals"
